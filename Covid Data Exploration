@@ -1,0 +1,75 @@
+SELECT *
+ FROM `portfolio-project-385514.covid_vaccinations.2` 
+ WHERE continent is not null
+ ORDER BY 3,4;
+
+SELECT *
+ FROM `portfolio-project-385514.covid_deaths.COVID deaths` 
+ WHERE continent is not null
+ ORDER BY 3,4;
+
+SELECT location, date,total_cases,new_cases,total_deaths,population
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+WHERE continent is not null
+ORDER BY 1,2
+
+
+
+SELECT location, date,total_cases,total_deaths, (total_deaths/total_cases)*100 as deathpercetages
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+WHERE location like '%South_Africa%'
+WHERE continent is not null
+ORDER BY 1,2
+
+Looking at total cases vs population in South Africa
+SHows what percentage got COVID-19
+
+SELECT location, date,total_cases,population, (total_cases/population)*100 as PopulationpercentageInfected
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+WHERE location like '%South_Africa%'
+WHERE continent is not null
+ORDER BY 1,2
+
+This one shows the countries with the highest death rates 
+
+SELECT location, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 as PopulationpercentageInfected
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+GROUP BY location, population
+ORDER BY PopulationpercentageInfected desc
+
+
+
+SELECT location, MAX(cast(total_deaths as int)) as HighestInfectionCount, MAX((total_deaths/population))*100 as Populationpercentagedeaths
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+WHERE location like'%South_Africa%
+WHERE continent is not null
+GROUP BY location, population
+ORDER BY Populationpercentagedeaths desc
+
+
+BREAKDOWN BY CONTINENTS
+
+
+SELECT location, MAX(cast(total_deaths as int)) as TotalDeathCount
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+WHERE location like'%South_Africa%
+WHERE continent is null
+GROUP BY location
+ORDER BY TotalDeathCount desc
+
+
+
+SELECT continent, MAX(cast(total_deaths as int)) as TotalDeathCount
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+WHERE location like'%South_Africa%
+WHERE continent is not null
+GROUP BY continent
+ORDER BY TotalDeathCount desc
+
+GLOBAL NUMBERS
+
+SELECT date, SUM(new_cases),total_deaths,(total_deaths/total_cases)*100 as Populationpercentagedeaths
+FROM `portfolio-project-385514.covid_deaths.COVID deaths`
+WHERE continent is not null
+GROUP BY date
+ORDER BY 1,2
